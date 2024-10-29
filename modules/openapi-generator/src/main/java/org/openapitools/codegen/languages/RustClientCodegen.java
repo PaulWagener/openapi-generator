@@ -502,7 +502,11 @@ public class RustClientCodegen extends AbstractRustCodegen implements CodegenCon
     public String getTypeDeclaration(Schema p) {
         // use unaliased schema for client-side
         Schema unaliasSchema = unaliasSchema(p);
-        return super.getTypeDeclaration(unaliasSchema);
+        if (p.getNullable() == Boolean.TRUE) {
+            return "Option<" + super.getTypeDeclaration(unaliasSchema) + ">";
+        } else {
+            return super.getTypeDeclaration(p);
+        }
     }
 
     @Override
